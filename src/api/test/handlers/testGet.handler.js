@@ -1,14 +1,27 @@
-export class TestGetHandler {
+/**
+ * System imports
+ */
+import Boom from 'boom';
+
+/**
+ * Route class handler
+ */
+class TestGetHandler {
     constructor() {
 
     }
 
-    route() {
-        this.test();
-    }
-
-    test() {
-        console.log('really? private method');
+    /**
+     * Public
+     * GET test
+     * @param req
+     * @param res
+     * @returns {*}
+     */
+    route(req, res) {
+        return res.reply(Boom.badRequest('Wrong request', {dataError: 'some error data'}));
     }
 
 }
+
+export default new TestGetHandler();

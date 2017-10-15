@@ -1,12 +1,13 @@
 /**
  * System imports
  */
-import Confidence from 'confidence';
+import Confidence           from 'confidence';
 
 /**
  * Project imports
  */
-import database from './database'
+import auth                 from './auth'
+import database             from './database'
 
 /**
  * Setup
@@ -19,6 +20,7 @@ const criteria = {
  * Config
  */
 const config = {
+    auth,
     database
 };
 

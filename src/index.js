@@ -1,10 +1,21 @@
 /**
  * System imports
  */
-import express from 'express';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import Config from './config';
+import express              from 'express';
+import bodyParser           from 'body-parser';
+import morgan               from 'morgan';
+import Config               from './config';
+
+/**
+ * Project imports
+ */
+import routes               from './routes';
+import responder            from './responder'
+
+/**
+ * Express application configuration
+ */
+express.response = responder;
 
 const app = express();
 
@@ -23,10 +34,10 @@ app.use((req, res, next) => {
 //log all requests to the console
 app.use(morgan('dev'));
 
-console.log(Config.get('/database'));
+//routes for our API
+app.use(...routes);
 
+//start server
 app.listen(8080, () => {
     console.log(`Listening to 8080`);
 });
-
-

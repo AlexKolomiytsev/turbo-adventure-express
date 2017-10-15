@@ -1,3 +1,17 @@
-import express from 'express';
+/**
+ * Setup
+ */
+const API_PREFIX = '/api';
 
-express.Router()
+/**
+ * Features handlers
+ */
+import Test from '../api/test';
+
+/**
+ * Application routing configuration
+ */
+export default [
+    '/test', Test,
+
+]
