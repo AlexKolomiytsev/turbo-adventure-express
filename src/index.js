@@ -2,6 +2,7 @@
  * System imports
  */
 import express              from 'express';
+import io                   from 'socket.io';
 import bodyParser           from 'body-parser';
 import morgan               from 'morgan';
 import Config               from './config';
@@ -13,7 +14,9 @@ import routes               from './routes';
 import responder            from './responder'
 
 /**
+ * ----------------------------------------------------------------
  * Express application configuration
+ * ----------------------------------------------------------------
  */
 express.response = responder;
 
@@ -38,6 +41,14 @@ app.use(morgan('dev'));
 app.use(...routes);
 
 //start server
-app.listen(8080, () => {
-    console.log(`Listening to 8080`);
+const server = app.listen(Config.get('/server/port'), () => {
+    console.log(`Server started at "${Config.get('/node/nodeEnv')}" env on port ${Config.get('/server/port')}`)
 });
+
+/**
+ * ----------------------------------------------------------------
+ * Socket.io configurations
+ * ----------------------------------------------------------------
+ */
+io(server);
+

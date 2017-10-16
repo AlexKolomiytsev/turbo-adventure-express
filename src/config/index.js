@@ -6,8 +6,10 @@ import Confidence           from 'confidence';
 /**
  * Project imports
  */
-import auth                 from './auth'
-import database             from './database'
+import server               from './server';
+import auth                 from './auth';
+import database             from './database';
+import node                 from './node';
 
 /**
  * Setup
@@ -20,8 +22,10 @@ const criteria = {
  * Config
  */
 const config = {
+    server,
     auth,
-    database
+    database,
+    node
 };
 
 const store = new Confidence.Store(config);
