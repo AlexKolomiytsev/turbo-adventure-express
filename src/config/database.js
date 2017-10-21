@@ -12,7 +12,14 @@ dotenv.load();
  * Database connections configuration
  */
 export default {
-    mongo: {
+    $filter: 'dbConnection',
+    'mongodb': {
+        connection: process.env.MONGODB_CONNECTION,
+        host: process.env.MONGODB_HOST,
+        port: process.env.MONGODB_PORT,
+        dbName: process.env.MONGODB_DATABASE
+    },
+    $default: {
         connection: process.env.MONGODB_CONNECTION,
         host: process.env.MONGODB_HOST,
         port: process.env.MONGODB_PORT,

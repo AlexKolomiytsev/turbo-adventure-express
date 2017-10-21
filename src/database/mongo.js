@@ -17,10 +17,10 @@ export class Mongo {
         this.mongoose = Mongoose;
         this.mongoose.Promise = Bluebird;
 
-        this.connection = config.get('/database/mongo/connection');
-        this.host = config.get('/database/mongo/host');
-        this.port = config.get('/database/mongo/port');
-        this.dbName = config.get('/database/mongo/dbName');
+        this.connection = config.get('/database/connection');
+        this.host = config.get('/database/host');
+        this.port = config.get('/database/port');
+        this.dbName = config.get('/database/dbName');
     }
 
     URL() {
@@ -28,6 +28,9 @@ export class Mongo {
     }
 
     connect() {
+
+        console.log(this.URL());
+
         this.mongoose.connect(this.URL());
     }
 }
