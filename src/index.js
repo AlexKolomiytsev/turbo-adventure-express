@@ -49,7 +49,7 @@ class Server {
     }
 
     dbConnect() {
-        new this.database().connect();
+        this.database.connect();
     }
 
     setupRoutes() {
