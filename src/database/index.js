@@ -13,13 +13,13 @@ export default class Db {
         const connection = config.get('/database').connection;
 
         const db = new Database(
-            this.getConnectionInstance()[connection]
+            this._getConnectionInstance()[connection]
         );
 
         db.connect();
     }
 
-    getConnectionInstance() {
+    _getConnectionInstance() {
         return {
             'mongodb': new Mongo()
         }
