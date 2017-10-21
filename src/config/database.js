@@ -13,9 +13,9 @@ dotenv.load();
  */
 export default {
     mongo: {
-        dbConnection: process.env.MONGODB_CONNECTION,
-        dbHost: process.env.MONGODB_HOST,
-        dbPort: process.env.MONGODB_PORT,
-        dbDatabase: process.env.MONGODB_DATABASE
+        connection: process.env.MONGODB_CONNECTION,
+        host: process.env.MONGODB_HOST,
+        port: process.env.MONGODB_PORT,
+        dbName: process.env.MONGODB_DATABASE
     }
 }

@@ -6,6 +6,7 @@ import io                   from 'socket.io';
 import http                 from 'http';
 import bodyParser           from 'body-parser';
 import morgan               from 'morgan';
+import cors                 from 'cors';
 
 /**
  * Project imports
@@ -13,6 +14,7 @@ import morgan               from 'morgan';
 import routes               from './routes';
 import responder            from './responder'
 import config               from './config';
+import Database             from './database'
 
 /**
  * Server
@@ -20,17 +22,16 @@ import config               from './config';
 class Server {
 
     constructor() {
-        this.express = express;
-        this.express.response = responder;
+        express.response    = responder;
 
-        this.port = config.get('/server/port');
-        this.host = config.get('/server/host');
-        this.nodeEnv = config.get('/node/nodeEnv');
+        this.port           = config.get('/server/port');
+        this.host           = config.get('/server/host');
+        this.nodeEnv        = config.get('/node/nodeEnv');
 
-        this.app = this.express();
-
-        this.http = http.Server(this.app);
-        this.socket = io(this.http);
+        this.app            = express();
+        this.http           = http.Server(this.app);
+        this.socket         = io(this.http);
+        this.database       = Database;
     }
 
     appConfig() {
@@ -39,15 +40,16 @@ class Server {
         this.app.use(bodyParser.json());
 
         //configure our app to handle CORS requests
-        this.app.use((req, res, next) => {
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
-            next()
-        });
+        this.app.use(
+            cors()
+        );
 
         //log all requests to the console
         this.app.use(morgan('dev'));
+    }
+
+    dbConnect() {
+        this.database.connect();
     }
 
     setupRoutes() {
@@ -56,6 +58,7 @@ class Server {
 
     start() {
         this.appConfig();
+        this.dbConnect();
         this.setupRoutes();
 
         this.app.listen(this.port, this.host, () => {
@@ -67,5 +70,6 @@ class Server {
 /**
  * Run server
  */
-new Server().start();
+const app = new Server();
+app.start();
 

@@ -21,12 +21,15 @@
     "babel-preset-stage-0": "^6.24.1"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "boom": "^6.0.0",
     "confidence": "^3.0.2",
+    "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "http": "0.0.0",
     "lodash": "^4.17.4",
+    "mongoose": "4.10.8",
     "morgan": "^1.9.0",
     "socket.io": "^2.0.3"
   }
