@@ -12,6 +12,6 @@ dotenv.load();
  * Application config
  */
 export default {
-    appUrl: process.env.APP_URL,
+    host: process.env.HOST,
     port: process.env.APP_PORT
 }
