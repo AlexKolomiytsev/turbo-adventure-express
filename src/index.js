@@ -3,6 +3,7 @@
  */
 import express              from 'express';
 import io                   from 'socket.io';
+import http                 from 'http';
 import bodyParser           from 'body-parser';
 import morgan               from 'morgan';
 import Config               from './config';
@@ -14,41 +15,57 @@ import routes               from './routes';
 import responder            from './responder'
 
 /**
- * ----------------------------------------------------------------
- * Express application configuration
- * ----------------------------------------------------------------
+ * Server
  */
-express.response = responder;
+class Server {
 
-const app = express();
+    constructor() {
+        this.express = express;
+        this.express.response = responder;
 
-//use body-parser so we can grab information from POST requests
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+        this.port = Config.get('/server/port');
+        this.nodeEnv = Config.get('/node/nodeEnv');
 
-//configure our app to handle CORS requests
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
-    next()
-});
+        this.app = this.express();
 
-//log all requests to the console
-app.use(morgan('dev'));
+        this.http = http.Server(this.app);
+        this.socket = io(this.http);
+    }
 
-//routes for our API
-app.use(...routes);
+    appConfig() {
+        //use body-parser so we can grab information from POST requests
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(bodyParser.json());
 
-//start server
-const server = app.listen(Config.get('/server/port'), () => {
-    console.log(`Server started at "${Config.get('/node/nodeEnv')}" env on port ${Config.get('/server/port')}`)
-});
+        //configure our app to handle CORS requests
+        this.app.use((req, res, next) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+            next()
+        });
+
+        //log all requests to the console
+        this.app.use(morgan('dev'));
+    }
+
+    setupRoutes() {
+        this.app.use(...routes);
+    }
+
+    start() {
+        this.appConfig();
+        this.setupRoutes();
+
+        this.app.listen(this.port, () => {
+            console.log(`Server started at "${this.nodeEnv}" env on port ${this.port}`)
+        });
+
+    }
+}
 
 /**
- * ----------------------------------------------------------------
- * Socket.io configurations
- * ----------------------------------------------------------------
+ * Run server
  */
-io(server);
+new Server().start();
 
