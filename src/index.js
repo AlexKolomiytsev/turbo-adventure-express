@@ -53,7 +53,7 @@ class Server {
     }
 
     setupRoutes() {
-        this.app.use(...routes);
+        this.app.use(routes);
     }
 
     start() {

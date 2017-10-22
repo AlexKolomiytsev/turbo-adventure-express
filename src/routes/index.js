@@ -1,17 +1,23 @@
 /**
+ * System imports
+ */
+import express from 'express';
+
+/**
  * Setup
  */
-const API_PREFIX = '/api';
+const router = express.Router();
 
 /**
  * Features handlers
  */
 import Test from '../api/test';
+import Auth from '../api/auth';
 
 /**
  * Application routing configuration
  */
-export default [
-    '/test', Test,
+router.use('/auth', Auth);
+router.use('/test', Test);
 
-]
+export default router;
